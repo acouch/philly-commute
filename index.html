@@ -19,21 +19,24 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGxoZn7mVTDXDHh_KxnwQ60IIdLmI2niQ"></script>
 <script>
 $(document).ready(function () {
-    var time = location.hash.substr(1).split('=')[0] == 'time' ? location.hash.substr(1).split('=')[1] : 30;
+    var latLng = location.hash.substr(1).split('=')[0] == 'latLng' ? location.hash.substr(1).split('=')[1] : '39.951199,-75.163487';
+
+    var lat = latLng.split(',')[0];
+    var lng = latLng.split(',')[1];
 
     var map = new google.maps.Map(
       document.getElementById("map_container"),
       {
         mapTypeId : google.maps.MapTypeId.ROADMAP,
-        center    : new google.maps.LatLng(39.951199,-75.163487),
+        center    : new google.maps.LatLng(lat, lng),
         zoom      : 13
       }
     );
 
     var widget = new walkscore.TravelTimeWidget({
       map    : map,
-      origin : '39.951199,-75.163487',
-      time: time,
+      origin : latLng,
+      time: 30,
       show   : true,
       mode   : walkscore.TravelTime.Mode.DRIVE,
       congestion: true,
@@ -58,17 +61,30 @@ $(document).ready(function () {
             widget.setMode('drive');
         }
         else if ($(this).attr("id") == 'type-walk') {
-            console.log('walk');
             widget.setMode('walk');
         }
         else if ($(this).attr("id") == 'type-public') {
             widget.setMode('transit');
         }
     });
+    var geocoder = new google.maps.Geocoder();
+
     $("#center").keypress(function(e) {
         if (e.which == 13) {
-            //widget.setOrigin();
-            alert("I haven't gotten this part working yet");
+            var address = this.value;
+            geocoder.geocode({'address': address}, function(results, status) {
+                if (status == "OK") {
+                    var lat = results[0].geometry.location.lat();
+                    var lng = results[0].geometry.location.lng();
+
+                    window.location.href = window.location.origin + "#latLng=" + lat + "," + lng;
+
+                    location.reload();
+                }
+                else {
+                    alert("Problem getting address, try again");
+                }
+            });
         }
     });
 
@@ -84,6 +100,8 @@ $(document).ready(function () {
     <div class="form-group">
         <label for="sel1">Select commute time:</label>
         <select class="form-control" id="time">
+            <option value="5">5</option>
+            <option value="10">10</option>
             <option value="15">15</option>
             <option value="20">20</option>
             <option value="30" selected="selected">30</option>
@@ -115,6 +133,7 @@ $(document).ready(function () {
 
     <div id="map_container" style="width: 100%;height: 100vh; border: 1px solid;">there should be a map here</div>
     </div>
+    <div style="padding-bottom: 80px"></div>
 </div>
 
 </body>
