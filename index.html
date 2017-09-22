@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
+<html lang="en">
+<meta charset="utf-8">
+
+  <title>Philly Commute time</title>
+  <meta name="description" content="Philly commute time">
+  <meta name="author" content="acouch">
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
@@ -13,7 +16,7 @@
 
 <script src="//apicdn.walkscore.com/api/v1/traveltime/js?wsid=ws_internal"></script>
 <script src="//apicdn.walkscore.com/api/v1/traveltime_widget/js?wsid=ws_internal"></script>
-<script src="https://maps.googleapis.com/maps/api/js?client=gme-redfin&channel=walkscore"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGxoZn7mVTDXDHh_KxnwQ60IIdLmI2niQ"></script>
 <script>
 $(document).ready(function () {
     var time = location.hash.substr(1).split('=')[0] == 'time' ? location.hash.substr(1).split('=')[1] : 30;
