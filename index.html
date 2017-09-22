@@ -20,7 +20,6 @@
 <script>
 $(document).ready(function () {
     var time = location.hash.substr(1).split('=')[0] == 'time' ? location.hash.substr(1).split('=')[1] : 30;
-    console.log(time)
 
     var map = new google.maps.Map(
       document.getElementById("map_container"),
@@ -30,7 +29,6 @@ $(document).ready(function () {
         zoom      : 13
       }
     );
-    console.log(window.location.hash);
 
     var widget = new walkscore.TravelTimeWidget({
       map    : map,
@@ -48,14 +46,29 @@ $(document).ready(function () {
         widget.setTime(this.value);
     });
     $('input:radio[name=rush]').change(function () {
-    console.log('wtf');
-    console.log(this.value);
-    console.log();
        if ($(this).attr("id") == 'rush-yes') {
             widget.setCongestion(true);
         }
         if ($(this).attr("id") == 'rush-no') {
             widget.setCongestion(false);
+        }
+    });
+    $('input:radio[name=type]').change(function () {
+       if ($(this).attr("id") == 'type-drive') {
+            widget.setMode('drive');
+        }
+        else if ($(this).attr("id") == 'type-walk') {
+            console.log('walk');
+            widget.setMode('walk');
+        }
+        else if ($(this).attr("id") == 'type-public') {
+            widget.setMode('transit');
+        }
+    });
+    $("#center").keypress(function(e) {
+        if (e.which == 13) {
+            //widget.setOrigin();
+            alert("I haven't gotten this part working yet");
         }
     });
 
@@ -84,6 +97,19 @@ $(document).ready(function () {
             <label class="radio-inline"><input type="radio" checked="checked" id="rush-yes" name="rush">Rush Hour</label>
             <label class="radio-inline"><input type="radio" id="rush-no" name="rush">Non-Rush Hour</label>
         </span>
+    </div>
+    <div class="form-group">
+        <label>Transport Type</label>
+        <span id="type-of-trans">
+            <label class="radio-inline"><input type="radio" checked="checked" id="type-drive" name="type">Drive</label>
+            <label class="radio-inline"><input type="radio" id="type-public" name="type">Public Transport</label>
+            <label class="radio-inline"><input type="radio" id="type-walk" name="type">Walk</label>
+        </span>
+    </div>
+
+    <div class="form-group">
+        <label>Center</label>
+        <input type="text" class="form-control" id="center" value="1 South Broad Street, Philadelphia, PA"></input>
     </div>
     </div>
 
